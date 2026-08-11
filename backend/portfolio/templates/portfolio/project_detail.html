@@ -1,0 +1,197 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-black text-white pt-24 pb-16 px-6 font-sans relative overflow-hidden">
+  <div class="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-[#00FF88]/5 rounded-full filter blur-[150px] pointer-events-none"></div>
+
+  <div class="max-w-4xl mx-auto z-10 relative space-y-8">
+    <!-- Back Link -->
+    <a href="{% url 'portfolio:index' %}#projects" class="inline-flex items-center space-x-2 font-mono text-[9px] text-gray-500 hover:text-[#00FF88] border border-white/5 bg-black/40 px-3 py-1.5 rounded transition-all">
+      <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+      <span>RETURN_TO_MAIN_DASHBOARD</span>
+    </a>
+
+    <!-- Project Header Title -->
+    <div class="text-left space-y-4">
+      <div>
+        <span class="font-mono text-[8px] bg-[#00FF88]/10 border border-[#00FF88]/20 text-[#00FF88] px-2 py-0.5 rounded font-black uppercase">
+          {{ project.category }}
+        </span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-black text-white font-mono uppercase tracking-wide">
+        {{ project.title }}
+      </h1>
+      <p class="text-gray-500 font-mono text-[9px] uppercase tracking-widest">
+        SPECIFICATIONS_RELEASED: {{ project.created_date }}
+      </p>
+    </div>
+
+    <!-- Image -->
+    <div class="w-full aspect-video rounded-xl overflow-hidden border border-[#00FF88]/20 shadow-[0_0_20px_rgba(0,255,136,0.1)] bg-gray-950">
+      <img src="{{ project.image_url }}" alt="{{ project.title }}" class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Control Actions -->
+    <div class="flex flex-wrap gap-4 justify-start font-mono text-[9px] items-center">
+      {% if project.github_url %}
+      <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-white/5 border border-white/10 hover:border-[#00FF88] hover:text-[#00FF88] text-white rounded flex items-center space-x-2 transition-all">
+        <i data-lucide="github" class="w-4 h-4"></i>
+        <span>SOURCE_REPOS</span>
+      </a>
+      {% endif %}
+
+      {% if project.local_port or project.live_url %}
+      <button 
+        id="btn-launch-{{ project.slug }}"
+        onclick="toggleLocalServer('{{ project.slug }}')"
+        class="px-5 py-2.5 bg-[#00FF88] text-black font-bold rounded flex items-center space-x-2 hover:shadow-[0_0_15px_#00FF88] transition-all"
+      >
+        <i data-lucide="play" class="w-4 h-4"></i>
+        <span>LAUNCH LOCAL SERVER</span>
+      </button>
+      <span id="status-text-{{ project.slug }}" class="text-[9px] text-red-500 font-bold uppercase tracking-wider pl-2">OFFLINE</span>
+      {% endif %}
+    </div>
+
+    <!-- Grid Details -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 text-left pt-6">
+      <div class="md:col-span-8 space-y-8">
+        
+        <!-- Overview -->
+        <div class="space-y-3">
+          <h3 class="font-mono text-xs text-[#00FF88] font-bold tracking-widest uppercase flex items-center gap-1.5 border-b border-white/5 pb-2">
+            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+            <span>01 // OVERVIEW</span>
+          </h3>
+          <p class="text-gray-400 text-xs leading-relaxed">
+            {{ project.description }}
+          </p>
+        </div>
+
+        <!-- Problem & Solution -->
+        <div class="space-y-3">
+          <h3 class="font-mono text-xs text-[#00FF88] font-bold tracking-widest uppercase flex items-center gap-1.5 border-b border-white/5 pb-2">
+            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+            <span>02 // CHALLENGE & INTEGRATION SOLUTION</span>
+          </h3>
+          <div class="space-y-2 text-xs text-gray-400">
+            <p>
+              <strong>The Challenge:</strong> Building systems of this scale requires aligning diverse database adapters (like mysqlclient/PyMySQL) and ensuring thread-safe processing loops during intensive tasks.
+            </p>
+            <p>
+              <strong>The Solution:</strong> The application leverages robust Django models, custom background tasks, and clean modular structures to keep response loops fast and secure.
+            </p>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="space-y-3">
+          <h3 class="font-mono text-xs text-[#00FF88] font-bold tracking-widest uppercase flex items-center gap-1.5 border-b border-white/5 pb-2">
+            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+            <span>03 // CORE_SPECIFICATIONS</span>
+          </h3>
+          <ul class="space-y-2 text-xs text-gray-400 font-mono pl-4">
+            {% for feature in project.features.splitlines %}
+            <li class="list-disc list-outside">
+              {{ feature }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="md:col-span-4 space-y-6">
+        <div class="border border-white/5 bg-black/60 p-5 rounded-xl glass-panel space-y-4">
+          <h4 class="font-mono text-xs text-white font-black tracking-wide border-b border-white/5 pb-2">
+            TECHNOLOGIES USED
+          </h4>
+          <div class="flex flex-wrap gap-1.5 font-mono">
+            {% for tech in project.technologies.split %}
+            <span class="text-[7.5px] bg-[#00FF88]/5 border border-[#00FF88]/20 text-[#00FF88] px-2 py-0.5 rounded font-black">
+              {{ tech }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="border border-white/5 bg-black/60 p-5 rounded-xl glass-panel font-mono text-[9px] text-gray-500 text-left space-y-3">
+          <h4 class="text-xs text-white font-black border-b border-white/5 pb-2 uppercase tracking-wide">
+            PROJECT ARCHITECTURE
+          </h4>
+          <div class="space-y-1 bg-black/80 p-3 rounded border border-white/5">
+            <div class="text-[#00FF88]">Django UI Interface</div>
+            <div class="pl-4">&darr; LAUNCH CMD</div>
+            <div class="text-[#00FF88]">Subprocess Daemon</div>
+            <div class="pl-4">&darr; PORT BIND</div>
+            <div class="text-[#00FF88]">Active Port ({{ project.local_port }})</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let serverState = 'offline';
+
+  async function toggleLocalServer(slug) {
+    const btn = document.getElementById(`btn-launch-${slug}`);
+    const statusText = document.getElementById(`status-text-${slug}`);
+
+    if (serverState === 'online') {
+      btn.innerHTML = "<span>STOPPING...</span>";
+      try {
+        const res = await fetch(`/api/stop/${slug}/`);
+        const data = await res.json();
+        if (data.status === 'stopped') {
+          serverState = 'offline';
+          statusText.innerText = "OFFLINE";
+          statusText.className = "text-[9px] text-red-500 font-bold uppercase tracking-wider pl-2";
+          btn.innerHTML = "<i data-lucide='play' class='w-4 h-4'></i><span>LAUNCH LOCAL SERVER</span>";
+          lucide.createIcons();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      return;
+    }
+
+    btn.innerHTML = "<span>LAUNCHING...</span>";
+    statusText.innerText = "STARTING";
+    statusText.className = "text-[9px] text-yellow-500 font-bold uppercase tracking-wider pl-2 animate-pulse";
+
+    try {
+      const res = await fetch(`/api/launch/${slug}/`);
+      const data = await res.json();
+      
+      if (data.status === 'started' || data.status === 'running') {
+        serverState = 'online';
+        statusText.innerText = "ONLINE";
+        statusText.className = "text-[9px] text-[#00FF88] font-bold uppercase tracking-wider pl-2";
+        btn.innerHTML = "<i data-lucide='square' class='w-4 h-4'></i><span>STOP SERVER</span>";
+        btn.className = "px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white font-bold rounded flex items-center space-x-2 transition-all";
+        lucide.createIcons();
+        window.open(data.url, '_blank');
+      } else if (data.status === 'static') {
+        statusText.innerText = "STATIC LOAD";
+        statusText.className = "text-[9px] text-blue-400 font-bold uppercase tracking-wider pl-2";
+        window.open(data.url, '_blank');
+      } else {
+        statusText.innerText = "LAUNCH FAIL";
+        statusText.className = "text-[9px] text-red-500 font-bold uppercase tracking-wider pl-2";
+        btn.innerHTML = "<i data-lucide='play' class='w-4 h-4'></i><span>LAUNCH LOCAL SERVER</span>";
+        lucide.createIcons();
+        alert("Error launching local project: " + data.message);
+      }
+    } catch (err) {
+      statusText.innerText = "OFFLINE";
+      statusText.className = "text-[9px] text-red-500 font-bold uppercase tracking-wider pl-2";
+      btn.innerHTML = "<i data-lucide='play' class='w-4 h-4'></i><span>LAUNCH LOCAL SERVER</span>";
+      lucide.createIcons();
+      alert("Failed to connect. Verify local virtual environment configuration.");
+    }
+  }
+</script>
+{% endblock %}

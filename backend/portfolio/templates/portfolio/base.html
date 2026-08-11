@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ronak - Futuristic B.Com & AI Full Stack Developer Portfolio. Django + Custom 3D Canvases." />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Inter:wght@100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cyber: {
+                black: '#000000',
+                darker: '#050505',
+                dark: '#0A0A0A',
+                gray: '#101010',
+                neon: '#00FF88',
+                neonHover: '#00FF66',
+                neonBright: '#39FF14',
+                neonLight: '#7CFFB2',
+                muted: '#8A8A8A',
+              }
+            },
+            fontFamily: {
+              orbitron: ['Orbitron', 'sans-serif'],
+              code: ['Fira Code', 'monospace'],
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- FontAwesome/Lucide Icons CDN Fallback -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <title>Ronak | B.Com Student & Python Django Developer | AI Portfolio</title>
+    
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #000000;
+        color: #FFFFFF;
+        overflow-x: hidden;
+      }
+      
+      /* Webkit Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #00FF88;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #00FF66;
+      }
+
+      /* Cyber background grid */
+      .cyber-grid {
+        background-size: 50px 50px;
+        background-image: 
+          linear-gradient(to right, rgba(0, 255, 136, 0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
+      }
+
+      /* Glassmorphism panel styling */
+      .glass-panel {
+        background: rgba(10, 10, 10, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 255, 136, 0.08);
+      }
+
+      /* Glowing borders */
+      .border-neon {
+        border-color: rgba(0, 255, 136, 0.2);
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.05);
+        transition: all 0.3s ease;
+      }
+      .border-neon:hover {
+        border-color: rgba(0, 255, 136, 0.6);
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+      }
+
+      .text-neon {
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+      }
+
+      /* Custom cursor container styles */
+      #custom-cursor-dot {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background-color: #00FF88;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.1s, height 0.1s, background-color 0.1s;
+      }
+      #custom-cursor-ring {
+        position: fixed;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #00FF88;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: transform 0.08s ease-out, width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+        box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+      }
+    </style>
+  </head>
+  <body class="selection:bg-[#00FF88] selection:text-black">
+    
+    <!-- Background Canvas Particles -->
+    <canvas id="bg-canvas" class="fixed inset-0 -z-10 bg-black pointer-events-none"></canvas>
+
+    <!-- Custom Cursor elements (hidden on touchscreens) -->
+    <div id="custom-cursor-dot" class="hidden md:block"></div>
+    <div id="custom-cursor-ring" class="hidden md:block"></div>
+
+    <!-- Main Content -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Global Javascript (Cursor, Background, Icons initialization) -->
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Custom Cursor Logic
+      const dot = document.getElementById('custom-cursor-dot');
+      const ring = document.getElementById('custom-cursor-ring');
+      
+      let mouseX = -100;
+      let mouseY = -100;
+      let ringX = -100;
+      let ringY = -100;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      });
+
+      // Spring effect on cursor ring
+      function animateCursor() {
+        const dx = mouseX - ringX;
+        const dy = mouseY - ringY;
+        ringX += dx * 0.15;
+        ringY += dy * 0.15;
+        
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      // Hover actions
+      document.querySelectorAll('a, button, [role="button"]').forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          ring.style.width = '48px';
+          ring.style.height = '48px';
+          ring.style.backgroundColor = 'rgba(0, 255, 136, 0.08)';
+          ring.style.borderColor = '#39FF14';
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.style.width = '24px';
+          ring.style.height = '24px';
+          ring.style.backgroundColor = 'transparent';
+          ring.style.borderColor = '#00FF88';
+        });
+      });
+
+      // Background Canvas Animation
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const particles = [];
+      const particleCount = Math.min(50, Math.floor(width / 30));
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      function renderBg() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, width, height);
+
+        // Draw grid
+        ctx.strokeStyle = 'rgba(0, 255, 136, 0.02)';
+        ctx.lineWidth = 1;
+        const gridSize = 80;
+        for (let x = 0; x < width; x += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < height; y += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        // Draw particles
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 255, 136, ${p.alpha})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(renderBg);
+      }
+      renderBg();
+    </script>
+  </body>
+</html>

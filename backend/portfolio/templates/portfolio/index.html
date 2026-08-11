@@ -1,0 +1,841 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<!-- Loading Screen Overlay -->
+<div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black font-mono p-6 transition-all duration-700">
+  <div class="w-full max-w-lg space-y-6">
+    <div class="flex items-center justify-between border-b border-[#00FF88]/20 pb-2 text-[10px] text-gray-500 tracking-wider">
+      <span>COGNITIVE CORE V4.2.16</span>
+      <span class="animate-pulse text-[#00FF88]">ONLINE</span>
+    </div>
+
+    <div class="space-y-2 text-left">
+      <h2 class="text-xl font-bold tracking-widest text-[#00FF88] text-neon">INITIALIZING RONAK.DEV</h2>
+      <div id="loader-log" class="h-6 text-xs text-gray-400">
+        <span class="text-[#39FF14]">&gt; </span>INITIALIZING COGNITIVE INTERFACE...
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="w-full h-4 bg-gray-900 border border-[#00FF88]/20 p-[2px] rounded-sm overflow-hidden">
+      <div id="loader-progress" class="h-full bg-gradient-to-r from-[#00FF88] to-[#39FF14] shadow-[0_0_10px_#00FF88] transition-all duration-150 ease-out" style="width: 0%"></div>
+    </div>
+
+    <div class="flex justify-between text-[11px] text-gray-500">
+      <span id="loader-pct">PROC: 0%</span>
+      <span>GPU_LOAD: SECURE</span>
+      <span>LATENCY: 14ms</span>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Navigation Bar -->
+<nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-5xl rounded-full bg-black/50 border border-white/10 backdrop-blur-md py-3 px-6 transition-all duration-300">
+  <div class="flex items-center justify-between">
+    <a href="#home" class="flex items-center space-x-2 font-mono font-black text-sm tracking-wider text-white hover:text-[#00FF88] transition-colors">
+      <i data-lucide="terminal" class="w-4 h-4 text-[#00FF88]"></i>
+      <span>RONAK<span class="text-[#00FF88]">.DEV</span></span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <div class="hidden md:flex items-center space-x-1 text-[11px] font-bold tracking-widest">
+      <a href="#home" class="nav-link px-4 py-1.5 text-[#00FF88] border border-[#00FF88]/20 bg-[#00FF88]/10 rounded-full transition-all">HOME</a>
+      <a href="#about" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">ABOUT</a>
+      <a href="#skills" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">SKILLS</a>
+      <a href="#projects" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">PROJECTS</a>
+      <a href="#experience" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">EXPERIENCE</a>
+      <a href="#services" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">SERVICES</a>
+      <a href="#contact" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">CONTACT</a>
+    </div>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button id="menu-toggle" class="md:hidden p-1 text-gray-400 hover:text-[#00FF88] transition-colors">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="hidden md:hidden overflow-hidden mt-4 border-t border-white/10 flex flex-col space-y-2 py-4">
+    <a href="#home" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-[#00FF88] border-l-2 border-[#00FF88] pl-3">HOME</a>
+    <a href="#about" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">ABOUT</a>
+    <a href="#skills" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">SKILLS</a>
+    <a href="#projects" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">PROJECTS</a>
+    <a href="#experience" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">EXPERIENCE</a>
+    <a href="#services" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">SERVICES</a>
+    <a href="#contact" class="mobile-nav-link py-2 text-xs font-bold tracking-widest text-gray-400 border-l-2 border-transparent pl-3">CONTACT</a>
+  </div>
+</nav>
+
+<!-- 🏠 HERO SECTION -->
+<section id="home" class="min-h-screen relative flex items-center pt-20 px-6 overflow-hidden">
+  <div class="absolute top-[20%] left-[10%] w-72 h-72 bg-[#00FF88]/5 rounded-full filter blur-[100px] pointer-events-none"></div>
+  <div class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-[#39FF14]/5 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+  <div class="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center z-10">
+    <div class="md:col-span-7 space-y-6 text-left">
+      <div class="flex items-center space-x-2 text-[11px] font-mono tracking-widest text-[#00FF88]">
+        <i data-lucide="terminal" class="w-3.5 h-3.5 animate-pulse"></i>
+        <span>SYSTEM PROTOCOL ACTIVE</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="font-mono text-gray-500 text-xs tracking-widest uppercase">HELLO, I'M</h3>
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-white font-sans">RONAK</h1>
+        <h2 class="text-xl md:text-3xl font-black text-[#00FF88] text-neon tracking-wide font-mono uppercase">
+          FULL STACK & AI DEVELOPER
+        </h2>
+      </div>
+
+      <div class="h-8 font-mono text-xs md:text-sm text-gray-400 flex items-center">
+        <span class="text-[#39FF14] mr-2">&gt;</span>
+        <span id="typed-text"></span>
+        <span class="w-1.5 h-4 bg-[#00FF88] ml-1 animate-pulse"></span>
+      </div>
+
+      <p class="text-gray-400 max-w-lg text-xs leading-relaxed font-sans">
+        Specializing in crafting premium, high-performance web applications using Django, React templates, and MySQL, with custom implementations of computer vision, speech AI, and B.Com business intelligence sheets.
+      </p>
+
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href="#projects" class="px-5 py-2.5 bg-gradient-to-r from-[#00FF88] to-[#00FF66] text-black font-mono font-bold text-xs tracking-widest rounded-md hover:shadow-[0_0_15px_#00FF88] transition-all flex items-center space-x-2">
+          <span>EXPLORE PROJECTS</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+
+        <a href="#contact" class="px-5 py-2.5 bg-black border border-[#00FF88] text-[#00FF88] font-mono font-bold text-xs tracking-widest rounded-md hover:bg-[#00FF88]/5 transition-all flex items-center space-x-2">
+          <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+          <span>CONTACT ME</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Rotating Hero Canvas Sphere (WebGL fallback) -->
+    <div class="md:col-span-5 flex justify-center items-center relative h-[320px] md:h-[400px]">
+      <canvas id="hero-canvas-sphere" class="w-full h-full cursor-grab active:cursor-grabbing max-w-[350px]"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- 👨💻 ABOUT SECTION -->
+<section id="about" class="py-20 px-6 relative overflow-hidden bg-black/40">
+  <div class="max-w-6xl mx-auto z-10 relative space-y-16">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 01 // OVERVIEW</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">ABOUT IDENTITY</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      <div class="md:col-span-7 space-y-6 text-left">
+        <h3 class="font-mono text-base text-[#00FF88] font-bold">
+          Ronak // Commerce & Technology Integration
+        </h3>
+        
+        <p class="text-gray-400 text-xs leading-relaxed">
+          Hello! I'm Ronak, a software developer currently in my final year studying **B.Com (Bachelor of Commerce)**. I specialize in combining core business concepts—such as accounting principles, cost-benefit projections, and commercial data—with modern technologies like Python, Django backend structures, and machine learning models.
+        </p>
+
+        <p class="text-gray-400 text-xs leading-relaxed">
+          By utilizing data analytics tools like MS Excel, PowerPoint (PPT), and database servers alongside backend programming, I create applications designed to resolve logistical business issues securely and efficiently.
+        </p>
+
+        <!-- Stats dashboard -->
+        <div class="grid grid-cols-2 gap-4 pt-4 font-mono text-[9px] text-gray-500">
+          <div class="border border-white/5 bg-black/60 p-4 rounded-lg glass-panel border-neon flex flex-col justify-between h-[90px]">
+            <span class="text-2xl font-black text-[#00FF88] text-neon">10+</span>
+            <span>COMPLETED PROJECTS</span>
+          </div>
+          <div class="border border-white/5 bg-black/60 p-4 rounded-lg glass-panel border-neon flex flex-col justify-between h-[90px]">
+            <span class="text-2xl font-black text-[#00FF88] text-neon">B.COM</span>
+            <span>FINAL YEAR EDUCATION</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mouse-Tilt Identity Card -->
+      <div class="md:col-span-5 flex justify-center items-center">
+        <div id="identity-card-wrapper" class="relative w-[280px] h-[360px] cursor-pointer" style="perspective: 1000px;">
+          <div id="identity-card" class="w-full h-full rounded-2xl p-6 flex flex-col justify-between border border-[#00FF88]/20 bg-black/80 shadow-[0_0_15px_rgba(0,255,136,0.05)] transition-all duration-100">
+            <div class="space-y-4">
+              <div class="flex justify-between items-center border-b border-[#00FF88]/20 pb-3">
+                <span class="font-mono text-[9px] text-[#00FF88] tracking-widest">ID_CARD // STUDENT</span>
+                <i data-lucide="cpu" class="w-4 h-4 text-[#00FF88]"></i>
+              </div>
+              <div class="text-left space-y-1">
+                <h4 class="text-2xl font-black text-white tracking-wide font-sans">RONAK</h4>
+                <p class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">B.COM FINAL YEAR & DEVELOPER</p>
+              </div>
+            </div>
+
+            <div class="bg-black/90 rounded-lg p-3 border border-white/5 font-mono text-[8px] text-gray-400 text-left space-y-1">
+              <div class="text-gray-600"># accounting_analytics.py</div>
+              <div><span class="text-[#00FF88]">def</span> <span class="text-[#39FF14]">forecast</span>(revenue, costs):</div>
+              <div class="pl-4">margin = (revenue - costs) / revenue</div>
+              <div class="pl-4"><span class="text-[#00FF88]">return</span> f<span class="text-[#7CFFB2]">"Margin: {margin:.2%}"</span></div>
+            </div>
+
+            <div class="text-left font-mono space-y-1.5">
+              <div class="text-[8px] text-gray-500 uppercase tracking-widest">Core Capabilities:</div>
+              <div class="flex flex-wrap gap-1">
+                <span class="text-[7.5px] bg-[#00FF88]/10 text-[#00FF88] border border-[#00FF88]/20 px-1.5 py-0.5 rounded font-black">PYTHON</span>
+                <span class="text-[7.5px] bg-[#00FF88]/10 text-[#00FF88] border border-[#00FF88]/20 px-1.5 py-0.5 rounded font-black">DJANGO</span>
+                <span class="text-[7.5px] bg-[#00FF88]/10 text-[#00FF88] border border-[#00FF88]/20 px-1.5 py-0.5 rounded font-black">EXCEL</span>
+                <span class="text-[7.5px] bg-[#00FF88]/10 text-[#00FF88] border border-[#00FF88]/20 px-1.5 py-0.5 rounded font-black">PPT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🧠 SKILLS SECTION -->
+<section id="skills" class="py-20 px-6 relative overflow-hidden bg-black">
+  <div class="max-w-6xl mx-auto z-10 relative space-y-16">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 02 // TECHNICAL MATRIX</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">SKILLS CONSTELLATION</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <!-- 3D Constellation canvas -->
+      <div class="md:col-span-7 flex justify-center w-full relative h-[380px] border border-white/5 bg-black/60 rounded-xl glass-panel">
+        <div class="absolute top-4 left-4 font-mono text-[9px] text-gray-500 tracking-widest flex items-center space-x-2">
+          <span class="w-1.5 h-1.5 bg-[#00FF88] rounded-full animate-ping"></span>
+          <span>DRAG TO ROTATE CONSTELLATION</span>
+        </div>
+        <canvas id="constellation-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+      </div>
+
+      <div class="md:col-span-5 text-left space-y-6">
+        <h3 class="font-mono text-[#00FF88] font-bold text-sm tracking-wide flex items-center space-x-2">
+          <i data-lucide="terminal" class="w-4 h-4 animate-pulse"></i>
+          <span>COGNITIVE MATRIX INDEX</span>
+        </h3>
+        <p class="text-gray-400 text-xs leading-relaxed">
+          My skills are structured inside this interactive constellation. Nodes connect technical backend skills like Python and Django with analytical business tools like Microsoft Excel, PowerPoint, and Financial modeling methods.
+        </p>
+
+        <!-- Downloader buttons for custom spreadsheet/PPT reports -->
+        <div class="space-y-3 font-mono text-[10px] pt-4">
+          <div class="text-gray-500 uppercase tracking-widest mb-1">Generate Skill Output:</div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="{% url 'portfolio:generate_excel' %}" class="flex-1 px-4 py-2 border border-[#00FF88]/20 bg-[#00FF88]/5 text-[#00FF88] rounded hover:bg-[#00FF88]/10 transition-all flex items-center justify-center space-x-2">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>DOWNLOAD EXCEL ANALYSIS</span>
+            </a>
+            <a href="{% url 'portfolio:generate_ppt' %}" class="flex-1 px-4 py-2 border border-white/10 bg-white/5 text-white rounded hover:bg-white/10 transition-all flex items-center justify-center space-x-2">
+              <i data-lucide="presentation" class="w-4 h-4"></i>
+              <span>DOWNLOAD PPT REPORT</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🚀 PROJECTS SECTION (Server Control Dashboard Edition) -->
+<section id="projects" class="py-20 px-6 relative overflow-hidden bg-black/50">
+  <div class="max-w-6xl mx-auto z-10 relative space-y-12">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 03 // ACTIVE SERVERS</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">SELECTED PROJECTS</h2>
+      <p class="font-mono text-[9px] text-gray-500 uppercase tracking-widest">LOCAL CONTROL PANEL // ONE-CLICK EXECUTION</p>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for project in projects %}
+      <div class="border border-white/5 bg-black/60 rounded-xl overflow-hidden glass-panel flex flex-col justify-between transition-all duration-300 hover:border-[#00FF88]/30 hover:shadow-[0_0_15px_rgba(0,255,136,0.1)] text-left">
+        <div class="relative aspect-video w-full overflow-hidden border-b border-white/5 bg-gray-950">
+          <img src="{{ project.image_url }}" alt="{{ project.title }}" class="w-full h-full object-cover" />
+          <span class="absolute top-3 right-3 bg-black/80 border border-[#00FF88]/20 px-2 py-0.5 rounded font-mono text-[8px] text-[#00FF88]">
+            {{ project.category }}
+          </span>
+        </div>
+
+        <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+          <div class="space-y-2">
+            <h3 class="text-lg font-black tracking-wide text-white font-mono uppercase">{{ project.title }}</h3>
+            <p class="text-gray-400 text-[10px] leading-relaxed line-clamp-3">{{ project.description }}</p>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex flex-wrap gap-1 font-mono">
+              {% for tech in project.technologies.split %}
+              <span class="text-[7.5px] bg-white/5 border border-white/10 text-white/70 px-1.5 py-0.5 rounded">{{ tech }}</span>
+              {% endfor %}
+            </div>
+
+            <!-- Server Control actions -->
+            <div class="border-t border-white/5 pt-4 space-y-3">
+              <div class="flex items-center justify-between font-mono text-[8px]">
+                <span class="text-gray-500">SERVER STATUS:</span>
+                <span id="status-text-{{ project.slug }}" class="text-red-500 font-bold uppercase">OFFLINE</span>
+              </div>
+              
+              <div class="flex gap-2">
+                <!-- Launch View details -->
+                <a href="{% url 'portfolio:project_detail' project.slug %}" class="flex-1 py-1.5 text-center border border-white/10 text-white hover:bg-white/5 font-mono text-[9px] rounded font-bold transition-all">
+                  OVERVIEW
+                </a>
+
+                <!-- Subprocess execution trigger -->
+                {% if project.local_port or project.live_url %}
+                  <button 
+                    id="btn-launch-{{ project.slug }}"
+                    onclick="toggleLocalServer('{{ project.slug }}')"
+                    class="flex-1 py-1.5 bg-[#00FF88]/10 hover:bg-[#00FF88] hover:text-black text-[#00FF88] border border-[#00FF88]/20 font-mono text-[9px] rounded font-bold transition-all hover:shadow-[0_0_8px_#00FF88]"
+                    style="flex: 1.5;"
+                  >
+                    LAUNCH SERVER
+                  </button>
+                {% else %}
+                  <button disabled class="flex-grow py-1.5 bg-gray-900 text-gray-600 font-mono text-[9px] rounded cursor-not-allowed">
+                    NOT CONFIGURED
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 🧬 EXPERIENCE SECTION -->
+<section id="experience" class="py-20 px-6 relative overflow-hidden bg-black">
+  <div class="max-w-4xl mx-auto z-10 relative space-y-16">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 04 // TIMELINE</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">EXPERIENCE BRANCHES</h2>
+    </div>
+
+    <div class="relative border-l border-[#00FF88]/20 ml-4 md:ml-6 space-y-12">
+      {% for exp in experience %}
+      <div class="relative pl-8 md:pl-12 group text-left">
+        <span class="absolute -left-[6px] top-1.5 w-3 h-3 bg-black border border-[#00FF88] rounded-full z-10 flex items-center justify-center shadow-[0_0_8px_#00FF88]">
+          <span class="w-1 h-1 bg-[#39FF14] rounded-full animate-ping"></span>
+        </span>
+        <div class="border border-white/5 bg-black/60 p-6 rounded-xl glass-panel border-neon transition-all">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/5 pb-3">
+            <div>
+              <h3 class="text-lg font-black text-white font-mono uppercase">{{ exp.role }}</h3>
+              <p class="font-mono text-[10px] text-[#00FF88] font-bold tracking-widest uppercase flex items-center gap-1.5 mt-1">
+                <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+                <span>{{ exp.company }}</span>
+              </p>
+            </div>
+            <span class="font-mono text-[9px] text-gray-500 bg-white/5 border border-white/10 px-2.5 py-1 rounded flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-3 h-3 text-[#00FF88]"></i>
+              <span>{{ exp.start_date }} &mdash; {{ exp.end_date }}</span>
+            </span>
+          </div>
+          <p class="text-gray-400 text-xs leading-relaxed mt-4">{{ exp.description }}</p>
+          
+          <ul class="mt-4 space-y-2 font-mono text-[9px] text-gray-500">
+            {% for bullet in exp.responsibilities.splitlines %}
+            <li class="flex items-start space-x-2">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-[#39FF14] flex-shrink-0 mt-0.5"></i>
+              <span>{{ bullet }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 💡 SERVICES SECTION -->
+<section id="services" class="py-20 px-6 relative overflow-hidden bg-black/40">
+  <div class="max-w-6xl mx-auto z-10 relative space-y-16">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 05 // CORE SERVICES</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">SERVICES GRID</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for service in services %}
+      <div class="service-card border border-white/5 bg-black/60 p-6 rounded-2xl flex flex-col justify-between glass-panel cursor-pointer transition-all duration-300 hover:border-[#00FF88]/40 hover:shadow-[0_0_15px_rgba(0,255,136,0.15)] text-left">
+        <div class="space-y-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center bg-[#00FF88]/10 text-[#00FF88] border border-[#00FF88]/20">
+            <i data-lucide="{{ service.icon_name }}" class="w-5 h-5"></i>
+          </div>
+          <h4 class="text-base font-black tracking-wide text-white font-mono uppercase">{{ service.title }}</h4>
+          <p class="text-gray-400 text-[10px] leading-relaxed font-sans">{{ service.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 📬 CONTACT SECTION -->
+<section id="contact" class="py-20 px-6 relative overflow-hidden bg-black/50">
+  <div class="max-w-6xl mx-auto z-10 relative space-y-16">
+    <div class="flex flex-col items-start text-left space-y-2 border-l-2 border-[#00FF88] pl-4">
+      <span class="font-mono text-[9px] text-[#00FF88] tracking-widest uppercase">SECTION 06 // CONNECT PORT</span>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white font-sans">CONNECT INTERFACE</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+      <div class="md:col-span-7 border border-[#00FF88]/20 bg-black/80 rounded-xl p-6 glass-panel font-mono text-left space-y-6">
+        <div class="flex items-center justify-between border-b border-white/5 pb-3">
+          <div class="flex items-center space-x-2 text-[10px] text-gray-500">
+            <i data-lucide="terminal" class="w-3.5 h-3.5 text-[#00FF88]"></i>
+            <span>TERMINAL://CONNECT.RONAK.DEV</span>
+          </div>
+          <span class="w-2 h-2 rounded-full bg-[#00FF88]"></span>
+        </div>
+
+        <form id="contact-form" onsubmit="submitForm(event)" class="space-y-4 text-xs">
+          {% csrf_token %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[#00FF88] font-bold">NAME :</label>
+              <input type="text" name="name" required placeholder="ENTER_NAME" class="w-full bg-black/60 border border-white/10 rounded px-3 py-2 text-white focus:border-[#00FF88] focus:outline-none" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[#00FF88] font-bold">EMAIL :</label>
+              <input type="email" name="email" required placeholder="ENTER_EMAIL" class="w-full bg-black/60 border border-white/10 rounded px-3 py-2 text-white focus:border-[#00FF88] focus:outline-none" />
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[#00FF88] font-bold">SUBJECT :</label>
+            <input type="text" name="subject" required placeholder="ENTER_SUBJECT" class="w-full bg-black/60 border border-white/10 rounded px-3 py-2 text-white focus:border-[#00FF88] focus:outline-none" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[#00FF88] font-bold">MESSAGE :</label>
+            <textarea name="message" required rows="4" placeholder="COMPILE_MESSAGE_STRING..." class="w-full bg-black/60 border border-white/10 rounded px-3 py-2 text-white focus:border-[#00FF88] focus:outline-none resize-none"></textarea>
+          </div>
+          <div id="form-status" class="hidden p-3 rounded border font-mono text-[9px]"></div>
+          <button type="submit" class="w-full py-2.5 bg-[#00FF88] text-black font-bold uppercase rounded flex items-center justify-center space-x-2 hover:shadow-[0_0_15px_#00FF88] transition-all">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            <span>SEND TRANSMISSION &rarr;</span>
+          </button>
+        </form>
+      </div>
+
+      <div class="md:col-span-5 flex flex-col justify-center items-center relative h-[320px]">
+        <canvas id="globe-canvas" class="w-full h-full border border-white/5 bg-black/40 rounded-xl max-w-[320px]"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 bg-black py-8 mt-20 font-mono text-[10px] text-gray-500 text-center">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center space-x-2">
+      <i data-lucide="terminal" class="w-3.5 h-3.5 text-[#00FF88]"></i>
+      <span>RONAK.DEV // B.COM PRO SUITE</span>
+    </div>
+    <span>&copy; {% now "Y" %} RONAK. ALL RIGHTS RESERVED.</span>
+  </div>
+</footer>
+
+<!-- 3D spheres & constellation script logic -->
+<script>
+  // Page Loader Animation
+  const loader = document.getElementById('loader');
+  const loaderProgress = document.getElementById('loader-progress');
+  const loaderPct = document.getElementById('loader-pct');
+  const loaderLog = document.getElementById('loader-log');
+  
+  const loadingLogs = [
+    "INITIALIZING PORTFOLIO CHANNELS...",
+    "CONNECTING SQLITE/MYSQL DATABASE...",
+    "RESOLVING projected 3D COGNITIVE CORES...",
+    "SYNCHRONIZING EXCEL & PPT LIBRARIES...",
+    "SYSTEM CHECK: NOMINAL.",
+    "INTERFACE COMPILED SUCCESSFULLY."
+  ];
+  
+  let loadProgress = 0;
+  let logIdx = 0;
+  
+  const logInterval = setInterval(() => {
+    logIdx = Math.min(logIdx + 1, loadingLogs.length - 1);
+    loaderLog.innerHTML = `<span class="text-[#39FF14]">&gt; </span>${loadingLogs[logIdx]}`;
+  }, 800);
+
+  const progressInterval = setInterval(() => {
+    loadProgress += Math.floor(Math.random() * 8) + 4;
+    if (loadProgress >= 100) {
+      loadProgress = 100;
+      clearInterval(progressInterval);
+      clearInterval(logInterval);
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 700);
+      }, 500);
+    }
+    loaderProgress.style.width = loadProgress + '%';
+    loaderPct.innerText = `PROC: ${loadProgress}%`;
+  }, 100);
+
+  // Hero Typing Subtitle Effect
+  const phrases = [
+    "I study B.Com and build AI solutions.",
+    "I create automated Excel analysis reports.",
+    "I build Django and React backends.",
+    "I turn business ideas into web code."
+  ];
+  let pIdx = 0, charIdx = 0, isDeleting = false;
+  const typedEl = document.getElementById('typed-text');
+
+  function typeText() {
+    const current = phrases[pIdx];
+    if (isDeleting) {
+      typedEl.innerText = current.substring(0, charIdx - 1);
+      charIdx--;
+    } else {
+      typedEl.innerText = current.substring(0, charIdx + 1);
+      charIdx++;
+    }
+
+    let speed = isDeleting ? 30 : 60;
+    if (!isDeleting && charIdx === current.length) {
+      isDeleting = true;
+      speed = 2000; // Pause at end
+    } else if (isDeleting && charIdx === 0) {
+      isDeleting = false;
+      pIdx = (pIdx + 1) % phrases.length;
+      speed = 500;
+    }
+    setTimeout(typeText, speed);
+  }
+  typeText();
+
+  // WebGL Fallback Hero 3D projected Canvas Sphere
+  const heroCanvas = document.getElementById('hero-canvas-sphere');
+  const hCtx = heroCanvas.getContext('2d');
+  let hWidth = (heroCanvas.width = 300);
+  let hHeight = (heroCanvas.height = 300);
+  let rotationAngle = 0;
+
+  const spherePoints = [];
+  for (let i = 0; i < 120; i++) {
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+    spherePoints.push({
+      x: 90 * Math.sin(phi) * Math.cos(theta),
+      y: 90 * Math.sin(phi) * Math.sin(theta),
+      z: 90 * Math.cos(phi)
+    });
+  }
+
+  function drawHeroSphere() {
+    hCtx.fillStyle = 'black';
+    hCtx.fillRect(0, 0, hWidth, hHeight);
+    
+    rotationAngle += 0.006;
+    const cosA = Math.cos(rotationAngle);
+    const sinA = Math.sin(rotationAngle);
+
+    // Draw outer orbit ring
+    hCtx.strokeStyle = 'rgba(0, 255, 136, 0.2)';
+    hCtx.lineWidth = 1;
+    hCtx.beginPath();
+    for (let theta = 0; theta < Math.PI * 2; theta += 0.1) {
+      const rx = 120 * Math.cos(theta);
+      const rz = 120 * Math.sin(theta);
+      const rxRot = rx * cosA - rz * sinA;
+      const rzRot = rz * cosA + rx * sinA;
+      const scale = 250 / (250 + rzRot);
+      const px = hWidth/2 + rxRot * scale;
+      const py = hHeight/2 + (rx * 0.2) * scale;
+      if (theta === 0) hCtx.moveTo(px, py);
+      else hCtx.lineTo(px, py);
+    }
+    hCtx.closePath();
+    hCtx.stroke();
+
+    // Draw central dot
+    hCtx.fillStyle = '#00FF88';
+    hCtx.beginPath();
+    hCtx.arc(hWidth/2, hHeight/2, 10, 0, Math.PI*2);
+    hCtx.fill();
+
+    // Project points
+    spherePoints.forEach((p) => {
+      const x1 = p.x * cosA - p.z * sinA;
+      const z1 = p.z * cosA + p.x * sinA;
+      const scale = 250 / (250 + z1);
+      const px = hWidth / 2 + x1 * scale;
+      const py = hHeight / 2 + p.y * scale;
+      
+      const alpha = Math.max(0.1, (250 - z1) / 350);
+      hCtx.fillStyle = `rgba(0, 255, 136, ${alpha})`;
+      hCtx.beginPath();
+      hCtx.arc(px, py, 1.2 * scale, 0, Math.PI * 2);
+      hCtx.fill();
+    });
+
+    requestAnimationFrame(drawHeroSphere);
+  }
+  drawHeroSphere();
+
+  // Skills Drag-Interactive 3D Constellation Canvas
+  const constCanvas = document.getElementById('constellation-canvas');
+  const cCtx = constCanvas.getContext('2d');
+  let cWidth = (constCanvas.width = 450);
+  let cHeight = (constCanvas.height = 380);
+
+  let cRotX = 0.3, cRotY = 0.3;
+  let isDragging = false;
+  let prevMouseX = 0, prevMouseY = 0;
+
+  const skillNodes = [
+    { name: "RONAK", x3d: 0, y3d: 0, z3d: 0, r: 16, isCenter: true }
+  ];
+
+  const skillNames = [
+    "Python", "Django", "React", "JavaScript", "MySQL", 
+    "Gemini AI", "OpenCV", "YOLO", "MS Excel", "PowerPoint", 
+    "Fin Analysis", "B.Com"
+  ];
+
+  skillNames.forEach((name, idx) => {
+    const phi = Math.acos(-1 + (2 * idx) / skillNames.length);
+    const theta = Math.sqrt(skillNames.length * Math.PI) * phi;
+    skillNodes.push({
+      name: name,
+      x3d: 110 * Math.sin(phi) * Math.cos(theta),
+      y3d: 110 * Math.sin(phi) * Math.sin(theta),
+      z3d: 110 * Math.cos(phi),
+      r: 6
+    });
+  });
+
+  constCanvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    prevMouseX = e.clientX;
+    prevMouseY = e.clientY;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevMouseX;
+    const dy = e.clientY - prevMouseY;
+    cRotY += dx * 0.005;
+    cRotX += dy * 0.005;
+    prevMouseX = e.clientX;
+    prevMouseY = e.clientY;
+  });
+
+  window.addEventListener('mouseup', () => isDragging = false);
+
+  function drawConstellation() {
+    cCtx.fillStyle = 'black';
+    cCtx.fillRect(0, 0, cWidth, cHeight);
+
+    if (!isDragging) {
+      cRotY += 0.0015;
+    }
+
+    const cosX = Math.cos(cRotX), sinX = Math.sin(cRotX);
+    const cosY = Math.cos(cRotY), sinY = Math.sin(cRotY);
+
+    skillNodes.forEach((node) => {
+      let x1 = node.x3d * cosY - node.z3d * sinY;
+      let z1 = node.z3d * cosY + node.x3d * sinY;
+      let y2 = node.y3d * cosX - z1 * sinX;
+      let z2 = z1 * cosX + node.y3d * sinX;
+      
+      const scale = 250 / (250 + z2);
+      node.projX = cWidth/2 + x1 * scale;
+      node.projY = cHeight/2 + y2 * scale;
+      node.scale = scale;
+      node.depth = z2;
+    });
+
+    // Draw connection lines to center
+    cCtx.strokeStyle = 'rgba(0, 255, 136, 0.15)';
+    cCtx.lineWidth = 1;
+    for (let i = 1; i < skillNodes.length; i++) {
+      cCtx.beginPath();
+      cCtx.moveTo(skillNodes[0].projX, skillNodes[0].projY);
+      cCtx.lineTo(skillNodes[i].projX, skillNodes[i].projY);
+      cCtx.stroke();
+    }
+
+    // Sort by depth
+    const sorted = [...skillNodes].sort((a,b) => b.depth - a.depth);
+    sorted.forEach((node) => {
+      cCtx.beginPath();
+      cCtx.arc(node.projX, node.projY, node.r * node.scale, 0, Math.PI*2);
+      cCtx.fillStyle = node.isCenter ? '#00FF88' : 'rgba(0, 255, 136, 0.7)';
+      cCtx.fill();
+
+      // Label names
+      if (node.scale > 0.75) {
+        cCtx.font = node.isCenter ? 'bold 10px monospace' : '8px monospace';
+        cCtx.fillStyle = '#FFFFFF';
+        cCtx.fillText(node.name, node.projX + 8, node.projY + 3);
+      }
+    });
+
+    requestAnimationFrame(drawConstellation);
+  }
+  drawConstellation();
+
+  // Contact Section Canvas Globe
+  const gCanvas = document.getElementById('globe-canvas');
+  const gCtx = gCanvas.getContext('2d');
+  let gWidth = (gCanvas.width = 280);
+  let gHeight = (gCanvas.height = 280);
+  let gAngle = 0;
+
+  const globePoints = [];
+  for (let i = 0; i < 90; i++) {
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2 * Math.PI;
+    const phi = Math.acos(2 * v - 1);
+    globePoints.push({
+      x: 80 * Math.sin(phi) * Math.cos(theta),
+      y: 80 * Math.sin(phi) * Math.sin(theta),
+      z: 80 * Math.cos(phi)
+    });
+  }
+
+  function drawGlobe() {
+    gCtx.fillStyle = 'black';
+    gCtx.fillRect(0, 0, gWidth, gHeight);
+    
+    gAngle += 0.003;
+    const cosA = Math.cos(gAngle), sinA = Math.sin(gAngle);
+
+    gCtx.beginPath();
+    gCtx.arc(gWidth/2, gHeight/2, 80, 0, Math.PI*2);
+    gCtx.strokeStyle = 'rgba(0, 255, 136, 0.04)';
+    gCtx.stroke();
+
+    globePoints.forEach((p) => {
+      const x1 = p.x * cosA - p.z * sinA;
+      const z1 = p.z * cosA + p.x * sinA;
+      const scale = 250 / (250 + z1);
+      const px = gWidth/2 + x1 * scale;
+      const py = gHeight/2 + p.y * scale;
+      
+      const alpha = Math.max(0.1, (250 - z1) / 350);
+      gCtx.fillStyle = `rgba(0, 255, 136, ${alpha})`;
+      gCtx.beginPath();
+      gCtx.arc(px, py, 1.2 * scale, 0, Math.PI * 2);
+      gCtx.fill();
+    });
+
+    requestAnimationFrame(drawGlobe);
+  }
+  drawGlobe();
+
+  // local django projects launcher subprocess managers
+  // Maps status per project slug
+  const projectStates = {};
+
+  async function toggleLocalServer(slug) {
+    const btn = document.getElementById(`btn-launch-${slug}`);
+    const statusText = document.getElementById(`status-text-${slug}`);
+
+    // If currently running, stop it
+    if (projectStates[slug] === 'online') {
+      btn.innerText = "STOPPING...";
+      btn.disabled = true;
+      try {
+        const res = await fetch(`/api/stop/${slug}/`);
+        const data = await res.json();
+        if (data.status === 'stopped') {
+          projectStates[slug] = 'offline';
+          statusText.innerText = "OFFLINE";
+          statusText.className = "text-red-500 font-bold uppercase";
+          btn.innerText = "LAUNCH SERVER";
+          btn.className = "flex-1 py-1.5 bg-[#00FF88]/10 hover:bg-[#00FF88] hover:text-black text-[#00FF88] border border-[#00FF88]/20 font-mono text-[9px] rounded font-bold transition-all";
+        }
+      } catch (err) {
+        console.error("Failed to stop project server", err);
+      } finally {
+        btn.disabled = false;
+      }
+      return;
+    }
+
+    // Launch server
+    btn.innerText = "LAUNCHING...";
+    btn.disabled = true;
+    statusText.innerText = "STARTING";
+    statusText.className = "text-yellow-500 font-bold uppercase animate-pulse";
+
+    try {
+      const res = await fetch(`/api/launch/${slug}/`);
+      const data = await res.json();
+      
+      if (data.status === 'started' || data.status === 'running') {
+        projectStates[slug] = 'online';
+        statusText.innerText = "ONLINE";
+        statusText.className = "text-[#00FF88] font-bold uppercase";
+        btn.innerText = "STOP SERVER";
+        btn.className = "flex-1 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 border border-red-500/20 font-mono text-[9px] rounded font-bold transition-all";
+        
+        // Open the local server in a new browser tab
+        window.open(data.url, '_blank');
+      } else if (data.status === 'static') {
+        statusText.innerText = "STATIC LOAD";
+        statusText.className = "text-blue-400 font-bold uppercase";
+        window.open(data.url, '_blank');
+      } else {
+        statusText.innerText = "LAUNCH FAIL";
+        statusText.className = "text-red-500 font-bold uppercase";
+        btn.innerText = "LAUNCH SERVER";
+        alert("Error launching local subprocess: " + data.message);
+      }
+    } catch (err) {
+      statusText.innerText = "OFFLINE";
+      statusText.className = "text-red-500 font-bold uppercase";
+      btn.innerText = "LAUNCH SERVER";
+      alert("Local connection failed: Verify the virtual environment path exists.");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // Submit Contact Form
+  async function submitForm(e) {
+    e.preventDefault();
+    const form = document.getElementById('contact-form');
+    const statusDiv = document.getElementById('form-status');
+    const formData = new FormData(form);
+
+    statusDiv.style.display = 'block';
+    statusDiv.innerText = "TRANSMITTING MESSAGE...";
+    statusDiv.className = "p-3 rounded border font-mono text-[9px] bg-yellow-500/5 border-yellow-500/30 text-yellow-400";
+
+    try {
+      const res = await fetch('/api/contact/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+      });
+      if (res.ok) {
+        statusDiv.innerText = "> TRANSMISSION SECURED. MESSAGE RECORDED.";
+        statusDiv.className = "p-3 rounded border font-mono text-[9px] bg-[#00FF88]/5 border-[#00FF88]/30 text-[#00FF88]";
+        form.reset();
+      } else {
+        throw new Error("API rejection");
+      }
+    } catch (err) {
+      statusDiv.innerText = "> TRANSMISSION FAILED. DATA CACHED LOCALLY.";
+      statusDiv.className = "p-3 rounded border font-mono text-[9px] bg-red-500/5 border-red-500/30 text-red-400";
+    }
+  }
+</script>
+{% endblock %}
