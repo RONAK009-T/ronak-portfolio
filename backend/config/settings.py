@@ -1,14 +1,15 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-ronak-portfolio-key-2026-xyz')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,42 +63,50 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 # Database Settings
-# Dynamically fallback to SQLite if MySQL connection fails or credentials aren't set
-DB_HOST = os.environ.get('DB_HOST', 'localhost')
-DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
-DB_USER = os.environ.get('DB_USER', 'root')
-DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
-DB_PORT = os.environ.get('DB_PORT', '3306')
-
-# Check if MySQL variables are explicitly set and we want to use them
-USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
-    os.environ.get('DB_HOST'),
-    os.environ.get('DB_NAME'),
-    os.environ.get('DB_USER')
-])
-
-if USE_MYSQL:
+# Use PostgreSQL on Render if DATABASE_URL environment variable is present
+if os.environ.get('DATABASE_URL'):
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,
-            'PORT': DB_PORT,
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'connect_timeout': 5,
-            }
-        }
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True
+        )
     }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+    # Fallback to local configuration (MySQL or SQLite)
+    USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
+        os.environ.get('DB_HOST'),
+        os.environ.get('DB_NAME'),
+        os.environ.get('DB_USER')
+    ])
+
+    if USE_MYSQL:
+        DB_HOST = os.environ.get('DB_HOST', 'localhost')
+        DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
+        DB_USER = os.environ.get('DB_USER', 'root')
+        DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
+        DB_PORT = os.environ.get('DB_PORT', '3306')
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': DB_NAME,
+                'USER': DB_USER,
+                'PASSWORD': DB_PASSWORD,
+                'HOST': DB_HOST,
+                'PORT': DB_PORT,
+                'OPTIONS': {
+                    'charset': 'utf8mb4',
+                    'connect_timeout': 5,
+                }
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,6 +126,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Enable WhiteNoise compression and caching for static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media uploads (resumes, screenshots)
 MEDIA_URL = '/media/'
