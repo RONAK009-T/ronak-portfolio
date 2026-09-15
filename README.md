@@ -69,17 +69,45 @@ This project is configured to run using the virtual environment already set up a
 
 ---
 
-## 🖥️ Local Project Subprocess Runner Dashboard
+## 🌐 Deploying to Render with MongoDB / Cloud Database
 
-When visiting your portfolio, you can scroll down to **Selected Projects** and click **Launch Server** on a project (e.g. *AI Interview Assistant* or *AI Code Reviewer*).
-* The backend will spin up the local server inside your python environment on a dedicated port (e.g. `8001`).
-* The browser will automatically open a new tab loading the project site (e.g. `http://127.0.0.1:8001`).
-* You can click **Stop Server** on the portfolio dashboard to close the background process whenever you want.
+This project includes built-in configurations (`render.yaml`, `build.sh`, `Procfile`, `WhiteNoise`, and MongoDB connection support) for one-click or automated deployment to [Render](https://render.com).
+
+### 🚀 Quick Render Deployment Steps
+
+1. **Push your code to GitHub**:
+   Ensure your repository is pushed to your GitHub account: `https://github.com/RONAK009-T/ronak-portfolio`.
+
+2. **Create a Free MongoDB Cluster on MongoDB Atlas**:
+   - Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a free tier cluster (M0).
+   - Create a database user (e.g. `ronak` and secure password).
+   - Under **Network Access**, allow access from anywhere (`0.0.0.0/0`).
+   - Copy your connection string (`mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/ronak_portfolio?retryWrites=true&w=majority`).
+
+3. **Deploy on Render**:
+   - Log in to [Render Dashboard](https://dashboard.render.com).
+   - Click **New +** &rarr; **Web Service**.
+   - Connect your GitHub repository `RONAK009-T/ronak-portfolio`.
+   - Configure the following settings:
+     - **Name**: `ronak-portfolio`
+     - **Runtime**: `Python 3`
+     - **Build Command**: `./build.sh`
+     - **Start Command**: `gunicorn --chdir backend config.wsgi:application`
+   - In **Environment Variables**, add:
+     - `DJANGO_SECRET_KEY`: *(Generate a secure random string)*
+     - `DEBUG`: `False`
+     - `ALLOWED_HOSTS`: `.onrender.com,localhost,127.0.0.1`
+     - `MONGODB_URI`: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/ronak_portfolio?retryWrites=true&w=majority`
+     - `MONGO_DB_NAME`: `ronak_portfolio`
+     - `PYTHON_VERSION`: `3.11.9`
+   - Click **Create Web Service**.
+
+4. **Automatic Build & Seed**:
+   Render will run `build.sh`, install all requirements from `backend/requirements.txt`, collect static files with WhiteNoise, run migrations, and automatically seed all your portfolio projects and profile information.
 
 ---
 
-## 📊 B.Com Microsoft Excel & PowerPoint Integration
+## 🔗 Official Links
+- **GitHub Profile**: [https://github.com/RONAK009-T/](https://github.com/RONAK009-T/)
+- **Live Portfolio**: Hosted on Render
 
-You can click **Download Excel Analysis** or **Download PPT Report** inside the **Skills Matrix**:
-* **Excel sheet**: Generates a custom stylized neon financial ledger calculating gross margins and tax profit forecasts utilizing `openpyxl`.
-* **PowerPoint presentation**: Constructs a multislide summary of your developer profile using `python-pptx`.

@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# exit on error
+# Exit on error
 set -o errexit
 
-# Install dependencies using the requirements file in backend/
+echo "==> Installing dependencies..."
 pip install -r backend/requirements.txt
 
-# Collect static files
+echo "==> Collecting static files..."
 python backend/manage.py collectstatic --noinput
 
-# Run migrations
+echo "==> Running migrations..."
 python backend/manage.py migrate
+
+echo "==> Seeding initial portfolio content..."
+python backend/manage.py seed_portfolio || true
+
+echo "==> Build finished successfully!"
