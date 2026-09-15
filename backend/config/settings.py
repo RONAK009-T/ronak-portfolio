@@ -79,7 +79,7 @@ MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URI')
 MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME', 'ronak_portfolio')
 
 # 2. PostgreSQL / Cloud SQL (DATABASE_URL)
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = (os.environ.get('DATABASE_URL') or '').strip()
 
 # 3. MySQL Configuration
 USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
@@ -88,34 +88,38 @@ USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
     os.environ.get('DB_USER')
 ])
 
+DATABASES = {}
+
 if MONGODB_URI:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': MONGO_DB_NAME,
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': MONGODB_URI,
-            }
+    DATABASES['default'] = {
+        'ENGINE': 'djongo',
+        'NAME': MONGO_DB_NAME,
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': MONGODB_URI,
         }
     }
-elif DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
+elif DATABASE_URL and ('://' in DATABASE_URL) and not DATABASE_URL.startswith('://'):
+    try:
+        parsed_db = dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True
         )
-    }
-elif USE_MYSQL:
-    DB_HOST = os.environ.get('DB_HOST', 'localhost')
-    DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
-    DB_USER = os.environ.get('DB_USER', 'root')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
-    DB_PORT = os.environ.get('DB_PORT', '3306')
-    DATABASES = {
-        'default': {
+        if parsed_db and parsed_db.get('ENGINE'):
+            DATABASES['default'] = parsed_db
+    except Exception:
+        pass
+
+if not DATABASES.get('default'):
+    if USE_MYSQL:
+        DB_HOST = os.environ.get('DB_HOST', 'localhost')
+        DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
+        DB_USER = os.environ.get('DB_USER', 'root')
+        DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
+        DB_PORT = os.environ.get('DB_PORT', '3306')
+        DATABASES['default'] = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': DB_NAME,
             'USER': DB_USER,
@@ -127,14 +131,11 @@ elif USE_MYSQL:
                 'connect_timeout': 5,
             }
         }
-    }
-else:
-    DATABASES = {
-        'default': {
+    else:
+        DATABASES['default'] = {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
