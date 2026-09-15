@@ -46,6 +46,10 @@
       <a href="#experience" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">EXPERIENCE</a>
       <a href="#services" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">SERVICES</a>
       <a href="#contact" class="nav-link px-4 py-1.5 text-gray-400 hover:text-white transition-all">CONTACT</a>
+      <a href="https://github.com/RONAK009-T" target="_blank" rel="noopener noreferrer" class="ml-2 px-3 py-1 bg-white/5 border border-white/10 hover:border-[#00FF88] hover:text-[#00FF88] text-gray-300 rounded-full flex items-center space-x-1.5 transition-all">
+        <i data-lucide="github" class="w-3.5 h-3.5"></i>
+        <span>GITHUB</span>
+      </a>
     </div>
 
     <!-- Mobile Hamburger Toggle -->
@@ -418,6 +422,18 @@
             <i data-lucide="send" class="w-3.5 h-3.5"></i>
             <span>SEND TRANSMISSION &rarr;</span>
           </button>
+
+          {% if social_links %}
+          <div class="pt-4 border-t border-white/5 flex flex-wrap items-center gap-3">
+            <span class="text-gray-500 text-[10px]">CHANNELS:</span>
+            {% for soc in social_links %}
+            <a href="{{ soc.url }}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded border border-white/10 bg-white/5 hover:border-[#00FF88] hover:text-[#00FF88] text-gray-300 text-[10px] flex items-center space-x-1.5 transition-all">
+              <i data-lucide="{{ soc.icon_name|lower }}" class="w-3 h-3"></i>
+              <span>{{ soc.platform }}</span>
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
         </form>
       </div>
 
@@ -435,6 +451,18 @@
       <i data-lucide="terminal" class="w-3.5 h-3.5 text-[#00FF88]"></i>
       <span>RONAK.DEV // B.COM PRO SUITE</span>
     </div>
+    
+    {% if social_links %}
+    <div class="flex items-center space-x-4">
+      {% for soc in social_links %}
+      <a href="{{ soc.url }}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#00FF88] transition-colors flex items-center space-x-1">
+        <i data-lucide="{{ soc.icon_name|lower }}" class="w-3.5 h-3.5"></i>
+        <span>{{ soc.platform }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     <span>&copy; {% now "Y" %} RONAK. ALL RIGHTS RESERVED.</span>
   </div>
 </footer>

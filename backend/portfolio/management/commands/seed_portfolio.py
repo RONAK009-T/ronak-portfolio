@@ -103,12 +103,12 @@ class Command(BaseCommand):
                 "category": "AI & Django",
                 "technologies": "Python, Django, React, Gemini API, Speech Recognition, Text-to-Speech",
                 "features": "AI interview questions generation\nReal-time voice-to-text response parsing\nAccurate score generation based on response metrics\nPersonalized dashboard with performance analytical graphs",
-                "github_url": "https://github.com/ronak/ai-interview-assistant",
+                "github_url": "https://github.com/RONAK009-T/ai-interview-assistant",
                 "live_url": "http://127.0.0.1:8001",
                 "image_url": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop",
                 "featured": True,
                 "created_date": date(2026, 8, 1),
-                "local_path": r"C:\Users\RONAK\OneDrive\Desktop\django\ai_interview_assistant",
+                "local_path": r"C:\Users\RONAK\Projects\django\ai_career_assistant",
                 "local_port": 8001
             },
             {
@@ -117,12 +117,12 @@ class Command(BaseCommand):
                 "category": "AI & Django",
                 "technologies": "Python, Django, React, Gemini API, REST API",
                 "features": "Logical bug and syntax error detection\nOptimized solution generation with runtime comparison\nSupports Python, Java, C++, and JavaScript code formats\nInteractive diff viewer showing the original and optimized code",
-                "github_url": "https://github.com/ronak/ai-code-reviewer",
+                "github_url": "https://github.com/RONAK009-T/AI_Code_Reviewer_Pro",
                 "live_url": "http://127.0.0.1:8501",
                 "image_url": "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=600&auto=format&fit=crop",
                 "featured": True,
                 "created_date": date(2026, 7, 20),
-                "local_path": r"C:\Users\RONAK\OneDrive\Desktop\django\AI_Code_Reviewer_Pro",
+                "local_path": r"C:\Users\RONAK\Desktop\AI_Code_Reviewer_Pro",
                 "local_port": 8501
             },
             {
@@ -131,7 +131,7 @@ class Command(BaseCommand):
                 "category": "Computer Vision",
                 "technologies": "Python, Pillow, OpenCV, YOLO, Tkinter",
                 "features": "Lossless image compression and file size (MB) reduction\nRGB distribution analyzer and dominant color extractor\nYOLO object detection and background removal\nAI Generated Image detector helper",
-                "github_url": "https://github.com/ronak/image-analyzer-editor",
+                "github_url": "https://github.com/RONAK009-T/image-analyzer-editor",
                 "live_url": "",
                 "image_url": "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600&auto=format&fit=crop",
                 "featured": False,
@@ -145,7 +145,7 @@ class Command(BaseCommand):
                 "category": "React & Node.js",
                 "technologies": "React, Node.js, Express, MySQL, JWT, Multer, Axios",
                 "features": "WhatsApp-style clean messaging layout\nSecure token authentication and contact management\nDynamic multi-file sharing support (Images, Videos)\nInteractive audio player and message search features",
-                "github_url": "https://github.com/ronak/chatconnect",
+                "github_url": "https://github.com/RONAK009-T/chatconnect",
                 "live_url": "http://127.0.0.1:3002",
                 "image_url": "https://images.unsplash.com/photo-1611746872915-64382b5c76da?q=80&w=600&auto=format&fit=crop",
                 "featured": True,
@@ -159,7 +159,7 @@ class Command(BaseCommand):
                 "category": "React & MySQL",
                 "technologies": "React, Node.js, Express, MySQL, Tailwind CSS",
                 "features": "Futuristic interactive luxury product dashboard\nDynamic persistent cart and wishlist functionality\nSecure administrative dashboard for inventory edits\nInstant searching, filtering, and checkout simulations",
-                "github_url": "https://github.com/ronak/luxtimepieces",
+                "github_url": "https://github.com/RONAK009-T/luxtimepieces",
                 "live_url": "http://127.0.0.1:3001",
                 "image_url": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop",
                 "featured": False,
@@ -173,12 +173,12 @@ class Command(BaseCommand):
                 "category": "HTML/CSS & Node",
                 "technologies": "HTML, CSS, JavaScript, Tailwind CSS, Node.js, MySQL",
                 "features": "Fully responsive modular layout showcasing artisan pieces\nSecure SQL database connecting carts to order states\nResponsive admin dashboard highlighting orders and products",
-                "github_url": "https://github.com/ronak/my-hand-craft",
+                "github_url": "https://github.com/RONAK009-T/my-hand-craft",
                 "live_url": "http://127.0.0.1:8004",
                 "image_url": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=600&auto=format&fit=crop",
                 "featured": False,
                 "created_date": date(2026, 3, 10),
-                "local_path": r"C:\Users\RONAK\OneDrive\Desktop\django\Furniture-Bazar-master",
+                "local_path": r"C:\Users\RONAK\ecommerce_website",
                 "local_port": 8004
             },
             {
@@ -187,7 +187,7 @@ class Command(BaseCommand):
                 "category": "React UI",
                 "technologies": "React, JavaScript, CSS, REST API",
                 "features": "Immersive character search with Jikan API integration\nInteractive visual charts mapping power levels and stats\nInteractive carousel showcasing cinematic trailers\nMobile responsive anime tracking lists",
-                "github_url": "https://github.com/ronak/anime-world",
+                "github_url": "https://github.com/RONAK009-T/anime-world",
                 "live_url": "http://127.0.0.1:8012",
                 "image_url": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop",
                 "featured": False,
@@ -201,7 +201,7 @@ class Command(BaseCommand):
                 "category": "HTML5 & CV",
                 "technologies": "HTML, CSS, JavaScript, MediaPipe, Canvas, Computer Vision",
                 "features": "Real-time AI hand-tracking using Google MediaPipe\nInteractive high-density HTML5 Canvas particle renderer\nSmooth, GPU-accelerated gesture movement response\nDynamic visual settings controls (velocity, count, colors)",
-                "github_url": "https://github.com/ronak/gesture-particle-system",
+                "github_url": "https://github.com/RONAK009-T/gesture-particle-system",
                 "live_url": "http://127.0.0.1:8011",
                 "image_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
                 "featured": True,
@@ -215,12 +215,12 @@ class Command(BaseCommand):
                 "category": "Network & Django",
                 "technologies": "Python, Django, Networking, HTML, CSS, JavaScript",
                 "features": "Local area network IP pinging and ARP scans\nReal-time connection telemetry and authorized logs\nAdministrative approval triggers for system registrations\nOptimized performance using Python concurrent threads",
-                "github_url": "https://github.com/ronak/lan-device-management",
+                "github_url": "https://github.com/RONAK009-T/lan-device-management",
                 "live_url": "http://127.0.0.1:8002",
                 "image_url": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=600&auto=format&fit=crop",
                 "featured": False,
                 "created_date": date(2025, 12, 10),
-                "local_path": r"C:\Users\RONAK\OneDrive\Desktop\django\College-ERP-main\College-ERP-main",
+                "local_path": r"C:\Users\RONAK\Projects\django",
                 "local_port": 8002
             }
         ]
@@ -229,7 +229,7 @@ class Command(BaseCommand):
 
         self.stdout.write('Seeding social links...')
         socials_data = [
-            {"platform": "GitHub", "url": "https://github.com/ronak", "icon_name": "Github", "order": 1},
+            {"platform": "GitHub", "url": "https://github.com/RONAK009-T", "icon_name": "Github", "order": 1},
             {"platform": "LinkedIn", "url": "https://linkedin.com/in/ronak", "icon_name": "Linkedin", "order": 2},
             {"platform": "Email", "url": "mailto:ronak@example.com", "icon_name": "Mail", "order": 3},
         ]

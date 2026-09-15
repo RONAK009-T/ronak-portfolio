@@ -9,7 +9,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-ronak-portfolio-key-2026-xyz')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
+ALLOWED_HOSTS = ['*'] if DEBUG else os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:8090',
+]
+if os.environ.get('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 INSTALLED_APPS = [
@@ -63,50 +74,67 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 # Database Settings
-# Use PostgreSQL on Render if DATABASE_URL environment variable is present
-if os.environ.get('DATABASE_URL'):
+# 1. MongoDB Configuration (MongoDB Atlas / Render Environment)
+MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URI')
+MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME', 'ronak_portfolio')
+
+# 2. PostgreSQL / Cloud SQL (DATABASE_URL)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+# 3. MySQL Configuration
+USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
+    os.environ.get('DB_HOST'),
+    os.environ.get('DB_NAME'),
+    os.environ.get('DB_USER')
+])
+
+if MONGODB_URI:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': MONGO_DB_NAME,
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': MONGODB_URI,
+            }
+        }
+    }
+elif DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True
         )
     }
+elif USE_MYSQL:
+    DB_HOST = os.environ.get('DB_HOST', 'localhost')
+    DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
+    DB_USER = os.environ.get('DB_USER', 'root')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
+    DB_PORT = os.environ.get('DB_PORT', '3306')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'connect_timeout': 5,
+            }
+        }
+    }
 else:
-    # Fallback to local configuration (MySQL or SQLite)
-    USE_MYSQL = os.environ.get('USE_MYSQL', 'False') == 'True' or all([
-        os.environ.get('DB_HOST'),
-        os.environ.get('DB_NAME'),
-        os.environ.get('DB_USER')
-    ])
-
-    if USE_MYSQL:
-        DB_HOST = os.environ.get('DB_HOST', 'localhost')
-        DB_NAME = os.environ.get('DB_NAME', 'ronak_portfolio')
-        DB_USER = os.environ.get('DB_USER', 'root')
-        DB_PASSWORD = os.environ.get('DB_PASSWORD', '1234')
-        DB_PORT = os.environ.get('DB_PORT', '3306')
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'NAME': DB_NAME,
-                'USER': DB_USER,
-                'PASSWORD': DB_PASSWORD,
-                'HOST': DB_HOST,
-                'PORT': DB_PORT,
-                'OPTIONS': {
-                    'charset': 'utf8mb4',
-                    'connect_timeout': 5,
-                }
-            }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

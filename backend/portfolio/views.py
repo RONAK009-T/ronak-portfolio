@@ -75,15 +75,62 @@ def start_project_api(request, slug):
         if proc.poll() is None: # Still running
             return JsonResponse({"status": "running", "url": f"http://127.0.0.1:{port}"})
 
+    # Auto-resolve path if original path doesn't exist or is empty
     if not path or not os.path.exists(path):
-        return JsonResponse({
-            "status": "error", 
-            "message": f"Project folder path not found on server directory: {path}"
-        })
+        folder_name = os.path.basename(path.rstrip('\\/')) if path else ''
+        candidate_bases = [
+            r"C:\Users\RONAK\Desktop",
+            r"C:\Users\RONAK\Projects\django",
+            r"C:\Users\RONAK\Projects",
+            r"C:\Users\RONAK\Downloads",
+            r"C:\Users\RONAK",
+            r"C:\Users\RONAK\rfc",
+            r"C:\Users\RONAK\OneDrive\Desktop",
+        ]
+        
+        found_path = None
+        # Check by folder name
+        if folder_name:
+            for base in candidate_bases:
+                check = os.path.join(base, folder_name)
+                if os.path.exists(check):
+                    found_path = check
+                    break
+                check_nested = os.path.join(base, folder_name, folder_name)
+                if os.path.exists(check_nested):
+                    found_path = check_nested
+                    break
 
-    python_exe = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'venv', 'Scripts', 'python.exe'))
-    if not os.path.exists(python_exe):
-        python_exe = "python" # Fallback
+        # Fallback check by slug or title
+        if not found_path:
+            title_slug = project.slug.replace('-', '_')
+            for base in candidate_bases:
+                for target in [folder_name, project.slug, title_slug, project.title]:
+                    if not target:
+                        continue
+                    check = os.path.join(base, target)
+                    if os.path.exists(check):
+                        found_path = check
+                        break
+
+        if found_path and os.path.exists(found_path):
+            path = found_path
+            project.local_path = found_path
+            project.save(update_fields=['local_path'])
+        else:
+            return JsonResponse({
+                "status": "error", 
+                "message": f"Project folder path not found on server directory: {path or '(empty)'}"
+            })
+
+    # If the root folder contains a frontend or backend subfolder with runnable targets, resolve into it
+    if not (os.path.exists(os.path.join(path, 'manage.py')) or os.path.exists(os.path.join(path, 'app.py')) or os.path.exists(os.path.join(path, 'package.json')) or os.path.exists(os.path.join(path, 'index.html'))):
+        if os.path.exists(os.path.join(path, 'frontend', 'package.json')) or os.path.exists(os.path.join(path, 'frontend', 'index.html')):
+            path = os.path.join(path, 'frontend')
+        elif os.path.exists(os.path.join(path, 'backend', 'manage.py')):
+            path = os.path.join(path, 'backend')
+
+    python_exe = sys.executable or "python"
 
     try:
         # 1. Django Project
@@ -97,11 +144,8 @@ def start_project_api(request, slug):
             )
         # 2. Streamlit Project
         elif os.path.exists(os.path.join(path, 'app.py')) and not os.path.exists(os.path.join(path, 'manage.py')):
-            streamlit_exe = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'venv', 'Scripts', 'streamlit.exe'))
-            if not os.path.exists(streamlit_exe):
-                streamlit_exe = "streamlit"
             proc = subprocess.Popen(
-                [streamlit_exe, 'run', 'app.py', '--server.port', str(port)],
+                [python_exe, '-m', 'streamlit', 'run', 'app.py', '--server.port', str(port), '--server.headless', 'true'],
                 cwd=path,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
@@ -109,7 +153,7 @@ def start_project_api(request, slug):
             )
         # 3. React / Node Project
         elif os.path.exists(os.path.join(path, 'package.json')):
-            # Run Vite server directly inside the project directory
+            # Run Vite or npm server directly inside the project directory
             proc = subprocess.Popen(
                 ['cmd.exe', '/c', f'npx vite --port {port} --host 127.0.0.1'],
                 cwd=path,
@@ -129,7 +173,7 @@ def start_project_api(request, slug):
         else:
             return JsonResponse({
                 "status": "error", 
-                "message": "Unable to determine project structure (no manage.py, app.py, package.json, or index.html found)."
+                "message": f"Unable to determine project structure in {path} (no manage.py, app.py, package.json, or index.html found)."
             })
 
         running_servers[project.id] = proc
